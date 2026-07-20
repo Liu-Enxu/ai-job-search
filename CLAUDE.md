@@ -153,7 +153,7 @@ After creating or updating a CV or cover letter, re-read the generated file and 
 ### Targeting
 - [ ] Profile statement / opening paragraph is tailored to the specific role (not generic)
 - [ ] Skills and experience bullets are reframed to match the job requirements
-- [ ] Key job requirements are addressed (with gaps acknowledged where relevant)
+- [ ] Key job requirements are addressed through matching strengths or honest adjacencies. **Do not volunteer gaps** - no paragraph or sentence enumerating what is missing (see `03-writing-style.md`). Silence on an unmatched requirement is fine; a false claim about it is not.
 - [ ] Nice-to-have requirements are highlighted where there is a match
 
 ### Consistency
