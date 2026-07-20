@@ -11,10 +11,62 @@ framework_version: 1.2.0
 All CVs use the moderncv LaTeX package with the "banking" style and "blue" color scheme.
 
 **Output file:** `cv/main_<company>_<role>.tex`
-**Compile with:** **lualatex** on MiKTeX/TeX Live. pdflatex often fails on modern MiKTeX installs with `fontawesome5` font-expansion errors; lualatex handles the same sources cleanly.
-**Master reference:** `cv/main_example.tex` (comprehensive CV with all competencies, experience, and achievements - use as source when building targeted CVs)
+**Master reference:** `cv/main_example.tex` (comprehensive CV with all competencies, experience, and achievements - use as source when building targeted CVs). It is intentionally 3 pages: a source to cut FROM, not a document to submit.
+
+### THIS MACHINE: use pdflatex, and mind moderncv 2.0.0
+
+Verified by compiling `main_example.tex` on 2026-07-19. This environment is **Debian TeX Live 2019 with moderncv 2.0.0 (2015)**, which differs from the modern MiKTeX stack the rest of this guide assumes. Three concrete consequences - all three were real compile failures, not theory:
+
+1. **Compile with `pdflatex`, not `lualatex`.** lualatex routes font loading through fontspec, and this install's luaotfload font-name database cannot resolve OpenType fonts by name. Both Latin Modern and FontAwesome fail with `not loadable: metric data not found`, producing a broken 18 KB PDF. pdflatex uses Type 1 fonts and compiles cleanly to a correct 197 KB PDF. (The lualatex advice below applies to modern MiKTeX with `fontawesome5` - a different stack. Keep it for portability, but pdflatex is correct here.)
+
+2. **`\firstnamestyle` / `\lastnamestyle` do not exist in moderncv 2.0.0.** They were introduced in 2.1. This version has a single `\namestyle` covering the whole name. Using the two-command form gives `! LaTeX Error: Command \firstnamestyle undefined.` Guard it:
+
+```latex
+\makeatletter
+\@ifundefined{firstnamestyle}{%
+  \renewcommand*{\namestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+}{%
+  \renewcommand*{\firstnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+  \renewcommand*{\lastnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+}
+\makeatother
+\renewcommand*{\sectionstyle}[1]{{\sectionfont\color{color1}#1}}
+```
+
+3. **Never `\usepackage{hyperref}`, and defer `\hypersetup`.** moderncv.cls loads hyperref itself with `[unicode]` (option clash if reloaded), and it does so inside `\AtEndPreamble` - so `\hypersetup` is undefined in the preamble body. Wrap it in the same hook:
+
+```latex
+\AtEndPreamble{\hypersetup{
+    colorlinks=true, linkcolor=blue, filecolor=magenta, urlcolor=blue,
+    pdftitle={Enxu Liu - CV},
+}}
+```
+
+Also drop `pdfpagemode=FullScreen` - moderncv manages `\pdfpagemode` itself, and forcing a CV to open fullscreen is hostile to the reader.
+
+### `\cventry` argument order (banking style)
+
+`\cventry{years}{title}{organization}{location}{grade}{description}`
+
+The **third** argument renders bold on the top line; the second renders italic beneath it. For projects this means the *project name* belongs in the organization slot and the descriptor in the title slot, or the CV shows "Graduate coursework" in bold with the project name subordinate to it:
+
+```latex
+% WRONG - descriptor renders bold, project name subordinate
+\item{\cventry{2024}{Motor Embedded Motion Control}{Graduate coursework}{}{}{...}}
+
+% RIGHT - project name leads
+\item{\cventry{2024}{Graduate coursework}{Motor Embedded Motion Control}{}{}{...}}
+```
 
 ### Compile command
+
+```bash
+cd cv && pdflatex -interaction=nonstopmode main_<company>_<role>.tex
+```
+
+Run it **twice** so page references resolve. Then confirm `grep -c '^!' main_<company>_<role>.log` returns 0 - a nonzero exit is not the only failure mode, since LaTeX will happily emit a PDF alongside errors.
+
+On a modern MiKTeX/TeX Live install with moderncv >= 2.1, use lualatex instead:
 
 ```bash
 cd cv && lualatex -interaction=nonstopmode main_<company>_<role>.tex
@@ -111,12 +163,34 @@ When the role sits outside your home domain, **lead with the domain-transfer arg
 
 **Create 2-3 profile statement templates for your main role types:**
 
-<!-- SETUP: These are populated based on your background -->
-**For [YOUR_PRIMARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_1]
+**For embedded Linux / BSP roles:**
+> Embedded systems engineer with an MSc in Electrical & Computer Engineering (Michigan) and
+> two years building production embedded Linux systems end to end. I have taken Rockchip and
+> Allwinner boards from UART console through U-Boot and kernel to a working shell, authored
+> custom kernel modules and device-tree changes, and built reproducible Yocto and Buildroot
+> images rather than one-off SD cards. At Motion Sync I architected a ROS2 data-acquisition
+> system on a custom Yocto image for Raspberry Pi 5, core-pinned for real-time jitter
+> isolation, and ported openpilot to an RK3588S SoC running vision inference on the Mali GPU.
+> I bring the same instrument-first debugging to the Linux layer that I use on the bench.
 
-**For [YOUR_SECONDARY_ROLE_TYPE] roles:**
-> [YOUR_PROFILE_STATEMENT_TEMPLATE_2]
+**For firmware / MCU roles:**
+> Embedded firmware engineer with an MSc in Electrical & Computer Engineering (Michigan) who
+> has owned a consumer product from firmware architecture through PCB design, bring-up, FCC
+> compliance, and shipping to sale. I led the FreeRTOS/ESP-IDF design for an ESP32 product
+> with fully decoupled drivers, built a delta-OTA-over-BLE pipeline that cut patch size to
+> 1.2 KB and update time under 10 seconds, and wrote a custom FreeRTOS `pvPortRealloc` to run
+> LVGL, FatFS, and FreeRTOS from a single heap on 128 KB of SRAM. I debug with the right
+> instrument: an intermittent ESP32 reset traced by oscilloscope to a sagging supply rail
+> under motor inrush, fixed and shipped.
+
+**Tailoring notes:**
+- Lead with the *quantified* claims (1.2 KB, <10 s, 128 KB, 30% cost reduction, ~1.94 mW).
+  They are the strongest differentiator and they are all verifiable.
+- The domain-transfer card for automotive/robotics postings is the openpilot port and the
+  CAN-FD DAQ work, both on real hardware. Do **not** lead with the S32K144 or self-driving
+  projects; those are coursework and must be labeled as such.
+- The RV1126 and BLDC joint projects are **in progress**. They may appear as current work, but
+  never with their target results stated as achieved. See `07-interview-prep.md` stories 8-9.
 
 Statements labeled *[Used for: <company>_<role>]* were extracted from archived application drafts by `/setup` Path A. They are **phrasing references, never fact sources**: when drafting from one, every factual claim still comes from `01-candidate-profile.md` - a past tailored draft does not vouch for its own accuracy.
 

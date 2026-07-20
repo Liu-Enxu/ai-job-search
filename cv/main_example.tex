@@ -1,41 +1,64 @@
-%% Example CV - [YOUR_NAME]
+%% Master CV - Enxu Liu
 %% Comprehensive overview of all competencies, experience, and achievements.
 %% Use as a master reference when tailoring role-specific CVs.
 %%
-%% SETUP: Run /setup to populate this with your actual information.
-%% Compile with: lualatex main_example.tex
-%% (pdflatex often fails on modern MiKTeX with fontawesome5 font-expansion errors.)
+%% NOTE: This master intentionally exceeds the 2-page limit that applies to
+%% tailored CVs. It is a source to cut FROM, not a document to submit.
+%% Tailored CVs (cv/main_<company>_<role>.tex) must be exactly 2 pages.
+%%
+%% Compile with: pdflatex main_example.tex   (run twice for page refs)
+%%
+%% ENGINE NOTE for this machine (Debian TeX Live 2019, moderncv 2.0.0):
+%% use pdflatex, NOT lualatex. lualatex routes through fontspec, and this
+%% install's luaotfload font-name database cannot resolve OpenType fonts by
+%% name (Latin Modern and FontAwesome both fail). pdflatex uses Type 1 fonts
+%% and compiles cleanly. The lualatex advice in 05-cv-templates.md applies to
+%% modern MiKTeX with fontawesome5, which is a different stack.
 
 \documentclass[11pt,a4paper,sans]{moderncv}
 \moderncvstyle{banking}
 \moderncvcolor{blue}
 
-% Force both first and last name AND section headings to render in moderncv
-% blue (color1). Default banking on lualatex+MiKTeX leaves these black, which
-% looks inconsistent with the rest of the blue accent scheme.
-\renewcommand*{\firstnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}
-\renewcommand*{\lastnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}
+% Force the name AND section headings to render in moderncv blue (color1).
+% Defaults leave these black, which clashes with the rest of the blue accent scheme.
+%
+% moderncv >= 2.1 splits the name into \firstnamestyle and \lastnamestyle;
+% moderncv 2.0.0 (shipped with TeX Live 2019 / Debian) has only \namestyle.
+% Detect which is available so this file compiles on both.
+\makeatletter
+\@ifundefined{firstnamestyle}{%
+  \renewcommand*{\namestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+}{%
+  \renewcommand*{\firstnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+  \renewcommand*{\lastnamestyle}[1]{{\fontsize{34}{36}\bfseries\upshape\color{color1}#1}}%
+}
+\makeatother
 \renewcommand*{\sectionstyle}[1]{{\sectionfont\color{color1}#1}}
 
 \usepackage[utf8]{inputenc}
-\usepackage{hyperref}
-\hypersetup{
+\usepackage{needspace}
+% NOTE: do NOT \usepackage{hyperref} here - moderncv.cls already loads it with
+% the [unicode] option, and re-loading triggers an option clash.
+%
+% moderncv loads hyperref inside \AtEndPreamble, so \hypersetup does not exist
+% yet at this point in the preamble. Our settings must be deferred into the same
+% hook, which runs after the class has loaded hyperref.
+\AtEndPreamble{\hypersetup{
     colorlinks=true,
     linkcolor=blue,
     filecolor=magenta,
     urlcolor=blue,
-    pdftitle={[YOUR_NAME] - CV},
-    pdfpagemode=FullScreen,
-}
+    pdftitle={Enxu Liu - CV},
+}}
 \usepackage[scale=0.80]{geometry}
 \usepackage{import}
 
 % personal data
-\name{[First]}{[Last]}
-\address{[Your Address, City, Country]}{}{}
-\phone[mobile]{[+XX XXXXXXXXXX]}
-\email{[your.email@example.com]}
-\extrainfo{\href{[https://linkedin.com/in/your-profile]}{LinkedIn}, \href{[https://github.com/your-username]}{GitHub}}
+\name{Enxu}{Liu}
+\address{Ann Arbor, Michigan, USA}{}{}
+\phone[mobile]{(734) 489-3536}
+\email{enxu@umich.edu}
+\extrainfo{\href{https://github.com/Liu-Enxu}{github.com/Liu-Enxu}}
 
 \begin{document}
 
@@ -46,7 +69,7 @@
 % ============================================================
 
 \vspace{6pt}
-\small{[Write a 3-5 line profile statement tailored to the role you're applying for. Focus on what makes you uniquely qualified. Example: "Data scientist with a PhD in [field] and X years of industry experience. Combines deep domain expertise in [domain] with strong applied machine learning and Python development skills. Experienced in developing end-to-end ML pipelines, from data ingestion to stakeholder-facing dashboards."]}
+\small{Embedded systems engineer with an MSc in Electrical \& Computer Engineering from the University of Michigan, working across firmware, embedded Linux, and hardware bring-up. Owned a consumer product end to end at a startup, from FreeRTOS architecture and PCB design through bring-up, FCC compliance, and shipping to sale. Equally at home writing a custom FreeRTOS allocator to fit three middlewares into 128\,KB of SRAM and taking a Rockchip SoC from UART console through U-Boot and kernel to a working Linux shell.}
 
 % ============================================================
 %     CORE COMPETENCIES
@@ -56,15 +79,19 @@
 \vspace{1pt}
 \begin{itemize}
 
-\item \textbf{[Skill Category 1]}: [Specific skills, frameworks, tools. Be concrete.]
+\item \textbf{Embedded firmware}: Embedded C/C++, FreeRTOS (tasks, timers, heap\_4 internals, custom allocators), bare-metal BSP design, bootloaders, delta OTA with rollback, LVGL, FatFS.
 
-\item \textbf{[Skill Category 2]}: [Specific skills, frameworks, tools.]
+\item \textbf{Embedded Linux \& BSP}: Yocto (scarthgap, bbappend authoring, BitBake), Buildroot, mainline U-Boot (SPL, DDR init), kernel build and cross-compilation, custom kernel modules, device tree authoring and pin-mux debugging, V4L2, MIPI-CSI and Rockchip ISP, RKNN NPU inference.
 
-\item \textbf{[Skill Category 3]}: [Specific skills, frameworks, tools.]
+\item \textbf{MCU \& SoC platforms}: ESP32 / ESP32-C3 (ESP-IDF), STM32 (CubeMX, HAL), NXP S32K144, ARM Cortex-M, Raspberry Pi 4/5, Orange Pi 5 (RK3588S), Rockchip RV1126, Allwinner V3s.
 
-\item \textbf{[Skill Category 4]}: [Domain expertise, methods, approaches.]
+\item \textbf{Buses \& peripherals}: I2C, SPI, UART, CAN / CAN-FD, BLE, TCP/IP, USB gadget, ADC, DAC, PWM, DMA, parallel 8080.
 
-\item \textbf{[Skill Category 5]}: [Tools, platforms, software.]
+\item \textbf{Controls \& robotics}: ROS2 (node architecture, topics, custom IPC), PID, MPC, LQR/LQE/LTR, Kalman filtering and EKF, GNSS/INS sensor fusion, BLDC-FOC motor control, MATLAB/Simulink/Stateflow.
+
+\item \textbf{Hardware \& lab}: PCB design (KiCAD), LTspice simulation, oscilloscope, logic analyzer, multimeter, JTAG/SWD (J-Link, ST-Link), board bring-up and root-cause analysis, DFM/DFA, FCC compliance.
+
+\item \textbf{Tooling \& process}: Git/GitHub, CMake, scons, GDB, Keil, VS Code, Python, Qt (C++), bash, MISRA C, Jira, Scrum, CI/CD.
 
 \end{itemize}
 
@@ -76,32 +103,99 @@
 \vspace{3pt}
 \begin{itemize}
 
-% --- Most Recent Role ---
-\item{\cventry{[YYYY--Present]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2024--Present}{Mechatronics Engineer}{Motion Sync (spinoff startup)}{Ann Arbor, MI}{}{\vspace{1pt}
+\textit{Haptic Pillow -- consumer product, owned firmware and hardware end to end}
 \begin{itemize}
-    \item [Achievement or responsibility 1 - be specific, use numbers where possible]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
-    \item [Achievement or responsibility 4]
+    \item Led FreeRTOS firmware design for ESP32 (ESP-IDF) with fully decoupled peripheral drivers; the architecture proved migratable across hardware. Built with CMake.
+    \item Built an object-oriented BSP: BMI160 IMU (I2C), W25Q NOR flash (SPI), vibration motor (PWM) at millisecond accuracy via FreeRTOS timers.
+    \item Designed a delta OTA pipeline over BLE with bootloader-managed boot selection: patch size reduced to 1.2\,KB, update completing in under 10\,s.
+    \item Implemented battery management: single-cell Li-ion monitoring (ADC), power-path/MOSFET control, battery-sag debugging; low-power configuration cut BLE TX power by ${\sim}$1.94\,mW.
+    \item Designed and brought up the PCB (ESP32-C3, IMU, DRV8833, TP4056) from datasheet and schematic with LTspice simulation; root-caused an intermittent brown-out to supply-rail sag under motor inrush using an oscilloscope and logic analyzer.
+    \item Shipped end to end to sale under FCC compliance; DFM/DFA reduced cost by 30\%. Agile/Scrum, Jira, Git/GitHub CI/CD.
+\end{itemize}
+\vspace{2pt}
+\textit{ROS2 Data Acquisition System -- embedded Linux, seat actuation and control}
+\begin{itemize}
+    \item Architected a ROS2 DAQ on Raspberry Pi 5 with a custom Yocto (scarthgap) image, gcc cross-compiled and BitBake-flashed; one sensor per node, core-pinned for real-time jitter isolation; DAQ GUI in Qt (C++).
+    \item Authored a bbappend adding \texttt{KERNEL\_MODULE\_AUTOLOAD:rpi += "i2c-dev"}; validated I2C/UART/BLE/TCP on hardware. Custom IPC via Unix-domain sockets and multiprocessing.
+    \item Time-synchronized IMU (I2C), video (ffmpeg/V4L2), dual GNSS (on-board u-blox plus TCP-networked), and BLE into ROS2 topics with ns-precision timestamps and auto-reconnect.
+    \item Delivered BLDC motor control with field-oriented control (FOC) on real hardware, commanded over CAN-FD: integrated the CAN-FD setpoint and telemetry path and implemented portions of the FOC control loop.
+    \item Deployed a Kalman filter for lane-keep-assist ADAS and a PID controller for seat actuation. Data processing in Python, datasets on AWS.
+\end{itemize}
+\vspace{2pt}
+\textit{Automotive vision prediction -- openpilot port to Orange Pi 5 (RK3588S)}
+\begin{itemize}
+    \item Ported sunnypilot/openpilot to Orange Pi 5 on Ubuntu-rockchip; built with scons, resolving Git-LFS model-weight and Mali OpenCL toolchain issues.
+    \item Ran the supercombo driving model in fp32 on the Mali-G610 GPU (OpenCL/tinygrad) at ${\sim}$10\,Hz for live path, lane, and lead-vehicle prediction on edge hardware.
+    \item Brought up USB camera capture (V4L2, MJPG) into a VisionIPC shared-memory pipeline feeding the model and a Qt UI overlay; calibrated camera intrinsics with OpenCV.
+    \item Removed the vehicle-CAN dependency by fusing GNSS (NEO-M9N) and IMU (BMI160) in an Innovation-Adaptive-Estimation Kalman Filter with IGGIII robust weighting, measurably more robust than a vanilla KF under measurement noise and GNSS dropout.
+\end{itemize}}}
+
+\end{itemize}
+
+% ============================================================
+%     SELECTED PROJECTS
+% ============================================================
+
+\section{Selected Projects}
+\vspace{3pt}
+\begin{itemize}
+
+\needspace{5\baselineskip}
+\item{\cventry{2026--Present}{MIPI-CSI camera and embedded Linux BSP}{RV1126 Edge Camera}{}{}{\vspace{1pt}
+\begin{itemize}
+    \item Brought up the ALIENTEK RV1126 (Rockchip) board: UART console, U-Boot to Linux 4.19 kernel to shell; built the full Buildroot vendor SDK image and flashed via rkdeveloptool.
+    \item MIPI-CSI IMX335 camera bring-up through the rkcif / rkisp / rkispp ISP pipeline; captured H.264-encoded 2K video with live LCD preview.
+    \item Modified the vendor SDK device tree (GPIO/LED node), rebuilt kernel/DTB, verified in \texttt{/sys/class/leds} and \texttt{/proc/device-tree}.
+    \item Loaded the NPU (galcore) for on-device inference; V4L2 capture with RKNN YOLO detection overlay in development.
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Previous Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2026}{Personal project}{Embedded Linux Bring-Up: Lichee Pi Zero (V3s)}{}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
-    \item [Achievement or responsibility 3]
+    \item Cross-compiled mainline U-Boot (SPL to DDR2 init) and the Linux kernel from source; flashed SPL to the sunxi 8\,KB offset and booted to a shell over UART.
+    \item Brought the board up headless: serial console, SSH over USB-gadget/Ethernet, expanded ext4 rootfs, deployed zImage and device tree to the boot partition.
+    \item Wrote a custom kernel module driving an onboard GPIO LED (gpiolib, kernel timer, module params), verified via insmod/rmmod and dmesg.
+    \item Resolved a device-tree pin-mux conflict by disabling SDIO mmc1 to reclaim the LED GPIOs; enabled the DWMAC\_SUN8I Ethernet driver and configured DDR2/LCD via Kconfig.
 \end{itemize}}}
 
 \vspace{3pt}
 
-% --- Earlier Role ---
-\item{\cventry{[YYYY--YYYY]}{[Job Title]}{[Company]}{[City, Country]}{}{\vspace{1pt}
+\needspace{5\baselineskip}
+\item{\cventry{2026--Present}{Personal project}{STM32 Linux-Inspired Handheld System}{}{}{\vspace{1pt}
 \begin{itemize}
-    \item [Achievement or responsibility 1]
-    \item [Achievement or responsibility 2]
+    \item Designed HAL firmware on STM32F446RE (ARM Cortex-M4) integrating FreeRTOS, LVGL, and FatFS through a single ucHeap; gcc and Keil toolchains, ST-Link and gdb debug.
+    \item Implemented a custom \texttt{pvPortRealloc} over the FreeRTOS heap\_4 allocator, handling the split/coalesce edge cases the upstream API omits; booted the full stack within 128\,KB SRAM and 512\,KB flash.
+    \item Built a bare-metal BSP and object-oriented LVGL GUI on an ILI9486 LCD with ADC+DMA touch sampling over a parallel 8080 interface; debugged a stale-coordinate fault to a non-clearing ADC conversion-complete flag using a logic analyzer.
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{5\baselineskip}
+\item{\cventry{2024}{Graduate coursework}{Motor Embedded Motion Control}{}{}{\vspace{1pt}
+\begin{itemize}
+    \item Configured PWM, ADCs, and interrupt routines in C on an NXP S32K144 to control BLDC motor torque.
+    \item Defined CAN-FD message IDs for steering-angle and torque setpoints with a Stateflow state machine for mode arbitration; tuned a PID loop to under 10\% overshoot, HIL-verified in real time.
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{4\baselineskip}
+\item{\cventry{2024}{Graduate coursework}{MIMO Feedback Controller Design}{}{}{\vspace{1pt}
+\begin{itemize}
+    \item Developed PID controllers via loop shaping for a simulated wafer-etching system in MATLAB/Simulink.
+    \item Designed a MIMO feedback controller integrating LQR with integrators, LQE, and loop transfer recovery; verified robustness by margin analysis.
+\end{itemize}}}
+
+\vspace{3pt}
+
+\needspace{4\baselineskip}
+\item{\cventry{2024}{Graduate coursework}{Self-Driving Cars: Path Planning and Motion Control}{}{}{\vspace{1pt}
+\begin{itemize}
+    \item Developed reinforcement-learning motion planning (Markov Decision Process) with MPC motion control, simulated and verified in ROS Rviz.
 \end{itemize}}}
 
 \end{itemize}
@@ -114,46 +208,28 @@
 \vspace{1pt}
 \begin{itemize}
 
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-Thesis: ``[Thesis Title].'' [Brief description of research focus.]
+\needspace{4\baselineskip}
+\item{\cventry{2023--2024}{MSc in Electrical \& Computer Engineering}{University of Michigan}{Ann Arbor, MI}{\textit{GPA 3.97}}{\vspace{1pt}
+Embedded systems, controls, and robotics.
 }}
 
 \vspace{3pt}
 
-\item{\cventry{[YYYY--YYYY]}{[Degree] in [Field]}{[Institution]}{[City, Country]}{}{\vspace{1pt}
-[Brief description or key topics.]
+\needspace{4\baselineskip}
+\item{\cventry{2020--2023}{BEng in Electronic \& Electrical Engineering}{University College London}{London, UK}{\textit{First-Class Honours, GPA 4.00}}{\vspace{1pt}
+Electronics, signals, and control systems.
 }}
 
 \end{itemize}
 
 % ============================================================
-%     LANGUAGES
+%     PATENTS
 % ============================================================
 
-\section{Languages}
+\section{Patents}
 \vspace{1pt}
 \begin{itemize}
-\item [Language 1] (native), [Language 2] (fluent), [Language 3] (intermediate).
-\end{itemize}
-
-% ============================================================
-%     PUBLICATIONS (optional)
-% ============================================================
-
-\section{Publications}
-\vspace{1pt}
-\begin{itemize}
-\item [Author(s)] ([Year]). [Title]. [Journal/Conference]. \href{[DOI_URL]}{DOI link}
-\end{itemize}
-
-% ============================================================
-%     HONORS AND AWARDS (optional)
-% ============================================================
-
-\section{Honors and Awards}
-\vspace{1pt}
-\begin{itemize}
-\item{\textbf{[Award Name]} -- [Event/Organization] ([Year]).}
+\item{Co-inventor, three University of Michigan provisional patent applications, UM Ref. Nos. 2026-235-01, 2026-234-01, 2026-233-01 (2026).}
 \end{itemize}
 
 % ============================================================
