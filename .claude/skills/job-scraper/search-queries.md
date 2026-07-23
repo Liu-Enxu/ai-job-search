@@ -231,6 +231,37 @@ Hitting saturation on LinkedIn means LinkedIn is exhausted, not the market. With
 working portal for this search, saturation is the signal to **add a source** (see the
 Greenhouse/Lever/Ashby note above), not to conclude the search is done.
 
+## Posting Age: the displayed date lies (added 2026-07-19)
+
+**LinkedIn's displayed date is a refresh date, not a creation date.** Employers repost stale
+requisitions and the listing shows as days old. Always estimate true age before deciding how
+to approach a role.
+
+**Method.** LinkedIn job IDs increment roughly with creation time. Within one scrape batch,
+sort by numeric job ID and compare against displayed dates: for genuinely new postings the two
+rise together. Any posting whose ID sits well *below* that band while showing a *recent* date
+is a repost. Calibrate the rate from the postings that do correlate (measured 2026-07-19:
+**~520,000 IDs/day**, from five clearly-new postings spanning 6-18 July), then estimate
+`created = base_date + (id - base_id) / rate` and report the lag.
+
+**Limits, state them when reporting.** Five-point linear calibration; IDs are not strictly
+globally sequential and the rate drifts over time. The *ordering* is reliable, the exact day
+counts are not. Treat output as "fresh / recent / long-running", never as a precise date. A
+repost can also mean a reopened or re-approved req, or several openings on one listing.
+
+**What to do with it.**
+- **Fresh (lag < 8 days):** apply quickly; the pool is still shallow and speed is real advantage.
+- **Long-running repost (lag > 25 days):** the application alone is weak leverage - months of
+  applicants have already gone into that pipeline and been passed over. Prioritise a referral or
+  a direct message to the hiring manager or recruiter. Read the age as ambiguous, not bad: a req
+  open for months is harder to fill, which can favour a candidate slightly below spec, but it can
+  equally be an evergreen pipeline posting with low intent to close.
+
+**Applicant counts are NOT available.** The `linkedin-search` CLI uses the public `jobs-guest`
+endpoints, which do not return applicant numbers - that figure exists only on the logged-in
+LinkedIn job page. Do not guess it, and do not imply it is known. If the user wants it, they
+must check the posting while signed in.
+
 ## Adapting Queries
 
 If the user specifies a focus area, select queries from the matching category and also generate 2-3 custom queries for that focus. For example:

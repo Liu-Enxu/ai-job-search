@@ -61,7 +61,7 @@ postings; nothing here is legal advice.
   - DFM/DFA work reduced cost by 30%
 
 ### Technical Skills
-- **Primary:** Embedded C/C++, FreeRTOS and bare-metal firmware, MCU peripherals (I2C, SPI, UART, ADC, PWM, DMA), ESP32/ESP-IDF, STM32/HAL, BLE and OTA, board bring-up and hardware debug
+- **Primary:** Embedded C/C++, FreeRTOS and bare-metal firmware, MCU peripherals (I2C, SPI, UART, ADC, PWM, DMA), ESP32/ESP-IDF, STM32/HAL, BLE and OTA, **firmware security (hardware root of trust, signed images, secure boot, secure debug lockout)**, board bring-up and hardware debug
 - **Secondary:** Embedded Linux BSP (Yocto, Buildroot, U-Boot, kernel modules, device tree), ROS2, Python, Qt (C++), CAN/CAN-FD, V4L2 and camera/ISP pipelines, PCB design (KiCAD), MATLAB/Simulink
 - **Domain:** Consumer electronics firmware, automotive and ADAS systems, robotics and motion control, sensor fusion and state estimation, edge AI deployment
 - **Software:** Git/GitHub, CMake, scons, GDB, Keil, VS Code, LTspice, oscilloscope, logic analyzer, JTAG/SWD (J-Link, ST-Link), Jira, MISRA C
@@ -80,13 +80,13 @@ _Inferred from CV and STAR stories; no formal assessment on file. See `.claude/s
 - **End-to-end ownership** - Consistently takes scope from architecture through hardware to shipped product
 - **Instrument-first debugging** - Reaches for the oscilloscope or logic analyzer before forming a theory
 - **Strengths:** Depth below the API level (custom FreeRTOS allocator, CAN-FD message-ID design), self-directed capability building, candid gap awareness
-- **Growth areas:** Security firmware (secure boot, signed images, key storage) and ROS2 / robotics ecosystem depth. Both are **development targets, not current skills** - never draft them as existing competencies. CV updates on the security side are planned; check `01-candidate-profile.md` for current status before claiming anything.
+- **Growth areas:** ROS2 / robotics ecosystem depth. **Security firmware is NO LONGER a growth area** - as of 2026-07-23 the profile records signed firmware images and a verified boot chain on ESP32 as *earned*. **Claimable:** hardware root of trust, applied cryptographic signatures, verified/secure boot chain, secure debug lockout, rollback protection. **Not claimable:** TPM 2.0, HSM, PKI/CA operations, fleet key-management infrastructure, LUKS, SELinux/AppArmor, security certification. See the full boundary in `01-candidate-profile.md`.
 - **Thrives in:** The intersection of secure firmware, the robotics ecosystem, and real-time RTOS work
 
 ### What Excites You
 Exploring the **limits of real-time systems under safety and timing constraints** - secure firmware, error handling and fault tolerance, determinism, hard scheduling guarantees. This is the core motivation thread and the strongest positioning line available: it links work already delivered (FreeRTOS timer accuracy, core-pinned jitter isolation, rollback-protected OTA) to where he wants to go next.
 
-Use it as the "why this work" thread in cover letters. Respect the distinction from Growth areas above: secure firmware **motivates** him but is not yet a demonstrated skill. Write about it as what draws him, never as what he has already done.
+Use it as the "why this work" thread in cover letters. As of 2026-07-23 secure firmware is both a motivation **and** a demonstrated skill at the application level (signed images, verified boot on ESP32), so it can now be written as work already done - within the claim boundary in `01-candidate-profile.md`. The platform-security tier (TPM, PKI, HSM) remains aspiration, not experience.
 
 ### Compensation Target
 Benchmark against the **local market average for an embedded systems engineer in the metro of the role** (not Ann Arbor), and target **1.1x to 1.2x that average**. Relocation makes this location-sensitive: a strong Michigan number can be a real-terms cut in the Bay Area or Seattle. See `04-job-evaluation.md` section 7 for the method and the H1B prevailing-wage floor.
@@ -113,9 +113,10 @@ Enxu explicitly saying so.
    joint have target results, not delivered ones. They may be described as current work.
    Never state a target outcome as achieved, and never put one on a CV until the milestone
    lands.
-3. **Growth areas are not skills.** Security firmware and deeper ROS2 are directions Enxu is
-   actively developing. They may be described as what he is building toward. They must never
-   appear as current competencies until the profile records them as earned.
+3. **Growth areas are not skills.** Deeper ROS2 is a direction Enxu is actively developing and
+   must not appear as a current competency. **Security firmware graduated to earned on
+   2026-07-23** (signed images, verified boot on ESP32) - claim it within the boundary recorded
+   in `01-candidate-profile.md`, never beyond it.
 4. **No people-management claims.** "Led firmware design" is scope leadership on a startup
    team, not management of people.
 
@@ -158,6 +159,7 @@ After creating or updating a CV or cover letter, re-read the generated file and 
 
 ### Consistency
 - [ ] CV follows the standard 2-page moderncv/banking format
+- [ ] **No References section** - omitted entirely, including "available upon request" (set 2026-07-23)
 - [ ] Cover letter uses cover.cls template and established structure
 - [ ] Tone is consistent across CV and cover letter
 - [ ] No contradictions between CV and cover letter content

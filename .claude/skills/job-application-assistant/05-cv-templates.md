@@ -117,7 +117,6 @@ Expected output: `Output written on main_<company>_<role>.pdf (2 pages, ...)`. A
 % 4. Professional Experience section
 % 5. Selected Publications (if applicable)
 % 6. Honors and Awards (if applicable)
-% 7. References
 
 \end{document}
 ```
@@ -228,10 +227,14 @@ Wherever the CV names a verifiable artifact - a public project, a hackathon entr
 ### Honors and Awards
 - Keep format brief, one line each
 
-### References
-- List 2-4 references with name, title, company, and contact
-- End with: "More references are available upon request."
-- **Do not attach reference letters** - employers typically contact references directly
+### References - OMIT ENTIRELY (set 2026-07-23, permanent)
+
+**Do not include a References section on any CV.** No "Available upon request", no placeholder,
+no heading. It is assumed by every employer, communicates nothing, and costs a section heading
+plus a line on a hard 2-page budget.
+
+If an employer asks for references, supply them then, in the format they request. Do not attach
+reference letters - employers contact references directly.
 
 ## Compile-and-Inspect Loop (MANDATORY)
 
@@ -263,6 +266,35 @@ Cut content — do not compress geometry or `\vspace`. See "Relevance-weighted c
 **Problem: content finishes early on page 2 (feels thin)**
 Restore the highest-relevance item that was previously cut — a CV that ends mid-page 2 looks incomplete.
 
+## Attribution audit (MANDATORY before presenting any CV)
+
+**Personal-project and coursework achievements must never appear inside a Professional Experience
+entry.** This is not a wording preference; it converts a hobby project into claimed paid work and
+would be indefensible in an interview or a reference check.
+
+*Caught 2026-07-23 by the candidate, not by this checklist:* the custom `pvPortRealloc` (an STM32
+handheld **personal project**) was drafted as a bullet inside the Motion Sync **employment** entry
+on the Neurophos CV. Every other CV had it correctly placed, so the error was a one-off slip during
+tailoring - which is exactly why it needs a mechanical check rather than trusting care.
+
+**Run this before every presentation.** For each achievement that belongs to a personal project or
+coursework, confirm its line number falls *after* `\section{Selected Projects}`:
+
+```bash
+cd cv && for f in main_*.tex; do
+  pe=$(grep -n "section{Professional Experience}" $f | cut -d: -f1)
+  sp=$(grep -n "section{Selected Projects}" $f | cut -d: -f1)
+  hit=$(grep -n "<achievement keyword>" $f | cut -d: -f1 | tr '\n' ' ')
+  echo "$f | ProfExp:$pe SelProj:$sp | hits: $hit"
+done
+```
+
+A hit between `ProfExp` and `SelProj` is a misattribution. A hit *before* `ProfExp` is normally fine -
+that is the Core Competencies block, which lists skills rather than assigning them to an employer.
+
+Keywords worth checking for this candidate: `pvPortRealloc`, `S32K144`, `RV1126`, `Lichee`,
+`V3s`, `LVGL`, `ILI9486`, `MIMO`, `self-driving`.
+
 ## ATS Parseability
 
 Most employers run CVs through an ATS before a human sees them, and the ATS reads the PDF's embedded **text layer**, not the rendered page. A CV can pass visual inspection and still extract as garbage. After the layout passes the compile-and-inspect loop, verify the text layer:
@@ -278,6 +310,14 @@ What to check in the extraction:
 - **Contact details as literal text.** The stock template's fontawesome contact icons extract as glyph names (`MOBILE-ALT`, `Envelope`) - harmless noise, because the actual address and number are printed beside them. The failure mode is a contact detail carried *only* by an icon or a hyperlink (like the `LinkedIn` link text, whose URL is not in the text layer): invisible to an ATS. The email address must always appear as printed text.
 - **No garbled output.** `(cid:NNN)` markers or `�` characters mean a font is embedded without a Unicode mapping - an ATS sees the same garbage. This shows up with unusual fonts in custom templates, not with the stock moderncv setup under lualatex.
 - **Reading order.** The stock banking style is single-column, so extraction order matches visual order. Custom templates (via `/add-template`) with sidebars or multi-column layouts can interleave unrelated lines; if extraction order is scrambled, the user is trading ATS compatibility for looks and should be told.
+- **Hyphenation breaks keywords (found 2026-07-21).** LaTeX hyphenates long words across line breaks, and the break survives into the PDF text layer: `microcontrollers` extracted as `microcon-` + `trollers`, so an ATS scanning for "microcontroller" finds **nothing**, even though the word is plainly visible on the page. This is invisible to visual inspection and silently costs keyword matches. After extracting, grep for the posting's key terms; if one is missing but you can see it on the page, suspect hyphenation. Fix by declaring the affected words unbreakable in the preamble:
+
+```latex
+\hyphenation{microcontrollers microcontroller firmware bootloader oscilloscope}
+```
+
+Words listed with no hyphens have no legal break points, so LaTeX keeps them whole. Add any long ATS-critical term the posting uses.
+
 - **Keyword coverage.** Match the posting's required/preferred terms against the extracted text, in the posting's language. Prefer the posting's exact term over a synonym when it is truthfully applicable - ATS matching is often literal. Never add a keyword the profile does not support.
 
 ## Page Budget - Hard 2-Page Limit
@@ -294,7 +334,6 @@ The CV **must** fit on exactly 2 pages when compiled. Use these content limits a
 | Education | 2-3 entries |
 | Publications | 2-3 entries |
 | Awards | 3 entries, single line each |
-| References | "Available upon request." (single line) |
 
 **If in doubt, cut rather than squeeze.** Reducing `\vspace` or geometry scale to force-fit content makes the CV look cramped.
 
@@ -336,7 +375,6 @@ The section order varies by role type:
 4. Education (reverse chronological)
 5. Languages
 6. Publications & Awards
-7. References
 
 **For domain-specific / specialist roles:**
 1. Profile statement / elevator pitch
@@ -344,4 +382,3 @@ The section order varies by role type:
 3. Education (reverse chronological) - credentials are a key qualifier
 4. Professional Experience (reverse chronological)
 5. Publications & Awards
-6. References

@@ -20,11 +20,11 @@ How well do the required/preferred skills align with the candidate's capabilitie
 | 40-59 | Partial match, significant upskilling needed |
 | 0-39 | Fundamental mismatch |
 
-**Strong match areas:** Embedded C/C++; FreeRTOS and bare-metal firmware (including heap/allocator internals); MCU peripheral and driver work (I2C, SPI, UART, ADC, PWM, DMA); ESP32/ESP-IDF and STM32/HAL; BLE and OTA/delta update with rollback; board bring-up and hardware debug (oscilloscope, logic analyzer, JTAG/SWD); embedded Linux BSP (Yocto, Buildroot, U-Boot, kernel build, device tree, custom kernel modules)
+**Strong match areas:** Embedded C/C++; **firmware security (hardware root of trust, applied cryptographic signatures, verified/secure boot chain, secure debug lockout, rollback-protected OTA)**; FreeRTOS and bare-metal firmware (including heap/allocator internals); MCU peripheral and driver work (I2C, SPI, UART, ADC, PWM, DMA); ESP32/ESP-IDF and STM32/HAL; BLE and OTA/delta update with rollback; board bring-up and hardware debug (oscilloscope, logic analyzer, JTAG/SWD); embedded Linux BSP (Yocto, Buildroot, U-Boot, kernel build, device tree, custom kernel modules)
 
 **Moderate match areas:** ROS2 and robotics middleware; **BLDC-FOC motor control on real hardware over CAN-FD** (system integration plus partial control-loop implementation - hardware-validated, not simulation); controls (PID, LQR/LQE, MPC, Kalman/EKF, sensor fusion); PCB design (KiCAD) and analog bring-up; Qt (C++) GUI; Python data processing; CAN/CAN-FD; V4L2 and camera/ISP pipelines; NPU inference deployment (RKNN); MATLAB/Simulink
 
-**Weak match areas (current state):** Firmware security (secure boot, signed images, key storage, HSM/TPM) - an active growth target, so weight career alignment up even while technical match scores low; web and cloud backend development; large-scale ML training (deployment-only exposure); functional-safety certification workflows (ISO 26262, DO-178C, IEC 61508) beyond MISRA C familiarity; formal people management; production-grade upstream kernel driver authorship (in progress, not yet earned); RF design; high-volume manufacturing test engineering
+**Weak match areas (current state):** *Organisational/platform* security tier only - TPM 2.0, HSM, PKI/CA operations, fleet-scale key management, LUKS, SELinux/AppArmor, security certification (Common Criteria, FIPS). **Device-level firmware security is a STRONG area as of 2026-07-23** (hardware root of trust, signed images, secure boot, secure debug lockout) and must not be scored as a gap; web and cloud backend development; large-scale ML training (deployment-only exposure); functional-safety certification workflows (ISO 26262, DO-178C, IEC 61508) beyond MISRA C familiarity; formal people management; production-grade upstream kernel driver authorship (in progress, not yet earned); RF design; high-volume manufacturing test engineering
 
 ### Candidate-identified gaps (from `documents/cv/STAR_stories.md`)
 
@@ -89,6 +89,48 @@ a **new employer willing to file an H1B transfer** (see the timeline in `CLAUDE.
 | US citizen / green card / permanent resident required | **FAIL** |
 | ITAR / EAR / export-control restricted; "US Person" required | **FAIL** |
 | Federal, defense, or cleared work requiring citizenship | **FAIL** |
+
+## PRE-DRAFT GATE (both checks, every time, before any drafting)
+
+Two cheap checks that must both pass before `/apply` Step 2. Each was learned by wasting a complete
+tailored CV and cover letter on 2026-07-21.
+
+**Gate 1 - Is the employer still accepting applications?**
+
+> **A successful LinkedIn detail fetch does NOT satisfy this gate.** Job-board listings outlive the
+> open requisition. Verification must happen on the **employer's own careers page or ATS**
+> (Greenhouse, Lever, Ashby, Workday), where the role must appear AND have a working apply path.
+
+Two applications were built and lost to this in one day:
+- *Bevi Embedded Engineer (75/100)* - full CV and cover letter produced, export-control verified clear, then found closed.
+- *Smith+Nephew Embedded SW Engineer II (re-scored 71/100)* - LinkedIn detail fetched fine, so it was called live; the employer had stopped accepting. **The LinkedIn-only check is what failed.**
+
+If the employer's own listing cannot be reached, report the role as **unverified** and say the
+liveness check could not be completed. Do not draft on a board listing alone.
+
+**Gate 2 - Does the application page carry control restrictions?** See below.
+
+Report both results before drafting. If either cannot be checked, say so and treat the role as
+**unverified**, never as clear.
+
+**CHECK THE EMPLOYER'S OWN APPLICATION PAGE BEFORE DRAFTING (learned the hard way 2026-07-21).**
+A clean LinkedIn posting body does **not** mean the role is clear. Export-control and work-authorization
+terms frequently appear only in the employer's application form or careers-site legal block, which the
+job-board text never shows.
+
+> **Worked example - Apptronik Firmware Engineer.** The LinkedIn posting contained no citizenship,
+> ITAR, or export-control language whatsoever. It was evaluated at 80/100 Strong Fit, ranked #1, and a
+> full tailored CV and cover letter were produced. Only when the candidate opened the actual application
+> page did this appear: *"Technology Control Restrictions: As a person in this position will have access
+> to technical data and/or computer software maintained by the Company, which includes export-controlled
+> technical data and/or computer software, successful applicants must be eligible under U.S. export
+> control regulations to access such information."* That is a US Person requirement. All the drafting
+> effort was wasted.
+
+**Required step:** before Step 2 of `/apply` (drafting), open the employer's real application page or
+careers listing and search it for: `export`, `ITAR`, `EAR`, `control`, `citizen`, `U.S. Person`,
+`sponsor`, `clearance`. Report what was found. If the page cannot be reached without submitting an
+application, say so explicitly and treat the role as **unverified**, not as clear.
 
 **ITAR is a common trap in this candidate's target space.** Automotive defense suppliers,
 aerospace embedded, and anything space- or defense-adjacent frequently require US Person
@@ -221,9 +263,10 @@ Does this role advance career goals and contain tasks that energize?
   which a small spinoff startup may not be able to offer
 
 **Growth directions (score career alignment UP when a posting offers these):**
-- **Security firmware** - secure boot, signed images, key storage, attack-surface reduction.
-  Actively being developed, not a current strength. A posting offering real exposure here is a
-  strong career-alignment signal even if the technical-match score is only partial.
+- **Security at platform/organisational scale** - TPM, HSM, PKI/CA operations, fleet key
+  management, MAC hardening. The device-level secure boot chain is earned (2026-07-23); the
+  tier above it is the growth direction. A posting offering that is a strong career-alignment
+  signal, and he now has a credible foundation to argue from rather than only interest.
 - **ROS2 / robotics ecosystem depth** - navigation, localization, simulation, hardware
   integration beyond the node architecture already delivered.
 

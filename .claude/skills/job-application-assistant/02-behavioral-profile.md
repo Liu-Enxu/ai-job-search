@@ -54,9 +54,10 @@ rather than guessing.
 This is the sharpest positioning signal in the profile, and it is a genuinely coherent one:
 it connects work already delivered (FreeRTOS timer accuracy, core-pinned jitter isolation,
 rollback-protected OTA) to where the candidate wants to go. Use it in cover letters as the
-"why this work" thread. Note the distinction from the growth areas below: **secure firmware
-motivates him but is not yet a demonstrated skill.** Both statements are true and must both
-be respected - write about it as what draws him, never as what he has already done.
+"why this work" thread. **Updated 2026-07-23:** secure firmware is now both motivation and
+demonstrated skill at the application level (signed images, verified boot on ESP32), so it can
+be written as work already done, within the claim boundary in `01-candidate-profile.md`. The
+platform-security tier (TPM, PKI, HSM) is still aspiration.
 
 _Still unrecorded - ask if a posting turns on any of it:_
 - Preferred team size and structure
@@ -65,14 +66,13 @@ _Still unrecorded - ask if a posting turns on any of it:_
 
 ## Growth Areas (frame positively in applications)
 
-Candidate-stated development targets. These are **directions of travel, not current skills** -
-never draft them as existing competencies.
+Candidate-stated development targets. Except where marked graduated, these are **directions of
+travel, not current skills** - never draft them as existing competencies.
 
-- **Security firmware.** Actively developing. Secure boot, signed images, key storage, and
-  attack-surface reduction are natural extensions of the bootloader and OTA work already done
-  (delta OTA with rollback protection is adjacent to signed-update work, and honest to cite as
-  the foundation being built on). The candidate plans to update the CV as this develops - check
-  `01-candidate-profile.md` for current status before claiming anything here.
+- ~~**Security firmware.**~~ **GRADUATED TO EARNED 2026-07-23.** Signed firmware images and a
+  verified boot chain on ESP32 are demonstrated work, confirmed by the candidate against his
+  industry portfolio. What remains a growth direction is the *platform* security tier: TPM 2.0,
+  PKI, HSM, LUKS, SELinux. See the claim boundary in `01-candidate-profile.md`.
 - **ROS2 / robotics ecosystem.** Deepening beyond the node architecture and DAQ integration
   already delivered, toward the wider ecosystem (navigation stack, robot_localization,
   simulation, hardware integration). The in-flight BLDC joint project is the vehicle for this.

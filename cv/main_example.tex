@@ -69,7 +69,7 @@
 % ============================================================
 
 \vspace{6pt}
-\small{Embedded systems engineer with an MSc in Electrical \& Computer Engineering from the University of Michigan, working across firmware, embedded Linux, and hardware bring-up. Owned a consumer product end to end at a startup, from FreeRTOS architecture and PCB design through bring-up, FCC compliance, and shipping to sale. Equally at home writing a custom FreeRTOS allocator to fit three middlewares into 128\,KB of SRAM and taking a Rockchip SoC from UART console through U-Boot and kernel to a working Linux shell.}
+\small{Embedded systems engineer with an MSc in Electrical \& Computer Engineering from the University of Michigan, working across firmware, embedded Linux, and hardware bring-up. Owned a consumer product end to end at a startup, from FreeRTOS architecture and PCB design through bring-up, FCC compliance, and shipping to sale. Equally at home writing a custom FreeRTOS allocator to fit three middlewares into 128\,KB of SRAM and taking a Rockchip SoC from UART console through U-Boot and kernel to a working Linux shell. Co-inventor on three provisional patents arising from the underlying research.}
 
 % ============================================================
 %     CORE COMPETENCIES
@@ -81,9 +81,11 @@
 
 \item \textbf{Embedded firmware}: Embedded C/C++, FreeRTOS (tasks, timers, heap\_4 internals, custom allocators), bare-metal BSP design, bootloaders, delta OTA with rollback, LVGL, FatFS.
 
+\item \textbf{Firmware security}: eFuse hardware root of trust; RSA-signed firmware images with a verified boot chain and secure bootloader; anti-rollback protection against downgrade; BLE application-level handshake and Resolvable Private Address (RPA) privacy; secure debug lockout on production units; MISRA C on safety-relevant code.
+
 \item \textbf{Embedded Linux \& BSP}: Yocto (scarthgap, bbappend authoring, BitBake), Buildroot, mainline U-Boot (SPL, DDR init), kernel build and cross-compilation, custom kernel modules, device tree authoring and pin-mux debugging, V4L2, MIPI-CSI and Rockchip ISP, RKNN NPU inference.
 
-\item \textbf{MCU \& SoC platforms}: ESP32 / ESP32-C3 (ESP-IDF), STM32 (CubeMX, HAL), NXP S32K144, ARM Cortex-M, Raspberry Pi 4/5, Orange Pi 5 (RK3588S), Rockchip RV1126, Allwinner V3s.
+\item \textbf{MCU \& SoC platforms}: ESP32 (Xtensa LX6) and ESP32-C3 (RISC-V) with ESP-IDF, STM32F446RE (ARM Cortex-M4, CubeMX/HAL), NXP S32K144 (ARM Cortex-M4F), Raspberry Pi 4/5, Orange Pi 5 (RK3588S), Rockchip RV1126, Allwinner V3s.
 
 \item \textbf{Buses \& peripherals}: I2C, SPI, UART, CAN / CAN-FD, BLE, TCP/IP, USB gadget, ADC, DAC, PWM, DMA, parallel 8080.
 
@@ -109,15 +111,20 @@
 \begin{itemize}
     \item Led FreeRTOS firmware design for ESP32 (ESP-IDF) with fully decoupled peripheral drivers; the architecture proved migratable across hardware. Built with CMake.
     \item Built an object-oriented BSP: BMI160 IMU (I2C), W25Q NOR flash (SPI), vibration motor (PWM) at millisecond accuracy via FreeRTOS timers.
-    \item Designed a delta OTA pipeline over BLE with bootloader-managed boot selection: patch size reduced to 1.2\,KB, update completing in under 10\,s.
+    \item Designed a delta OTA pipeline over BLE on an A/B dual-bank boot partition with fail-safe rollback and anti-rollback protection: patch size reduced to 1.2\,KB, update completing in under 10\,s. Optimized the iOS app link for slave latency and throughput.
     \item Implemented battery management: single-cell Li-ion monitoring (ADC), power-path/MOSFET control, battery-sag debugging; low-power configuration cut BLE TX power by ${\sim}$1.94\,mW.
     \item Designed and brought up the PCB (ESP32-C3, IMU, DRV8833, TP4056) from datasheet and schematic with LTspice simulation; root-caused an intermittent brown-out to supply-rail sag under motor inrush using an oscilloscope and logic analyzer.
-    \item Shipped end to end to sale under FCC compliance; DFM/DFA reduced cost by 30\%. Agile/Scrum, Jira, Git/GitHub CI/CD.
+    \item Built the device security chain: an eFuse hardware root of trust anchoring a verified boot chain, RSA-signed images checked by a secure bootloader before execution, anti-rollback protection against downgrade, a BLE application-level handshake, RPA addressing for privacy, and secure debug lockout on production units.
+    \item Carried the product end to end to sale, shipping 200 units; DFM/DFA reduced cost by 30\%. Agile/Scrum, Jira, Git/GitHub CI/CD.
 \end{itemize}
 \vspace{2pt}
-\textit{ROS2 Data Acquisition System -- embedded Linux, seat actuation and control}
+\textit{Active seat programme (PREACT) -- research through Tier 1 automotive OEM delivery}
 \begin{itemize}
+    % CONDITIONAL - include only when the posting mentions research, R&D, spinoff, clinical or
+    % human-subjects work. Cut by default on firmware/embedded CVs. See 01-candidate-profile.md.
+    \item Delivered an actuation and data-acquisition system that reduced motion-sickness accumulation by \textbf{${\sim}$19\%} across a 27-subject vehicle study, verified by a linear mixed-model fit (slope difference $p=1.8\mathrm{e}{-5}$) and corroborated by EDA physiological data.
     \item Architected a ROS2 DAQ on Raspberry Pi 5 with a custom Yocto (scarthgap) image, gcc cross-compiled and BitBake-flashed; one sensor per node, core-pinned for real-time jitter isolation; DAQ GUI in Qt (C++).
+    \item Deployed the system onto a local Tier 1 automotive OEM seat platform with tunable timing and roll/pitch motion profiles, tapping the OEM vehicle CAN bus for additional sensing and upgrading triggering to computer-vision-based prediction.
     \item Authored a bbappend adding \texttt{KERNEL\_MODULE\_AUTOLOAD:rpi += "i2c-dev"}; validated I2C/UART/BLE/TCP on hardware. Custom IPC via Unix-domain sockets and multiprocessing.
     \item Time-synchronized IMU (I2C), video (ffmpeg/V4L2), dual GNSS (on-board u-blox plus TCP-networked), and BLE into ROS2 topics with ns-precision timestamps and auto-reconnect.
     \item Delivered BLDC motor control with field-oriented control (FOC) on real hardware, commanded over CAN-FD: integrated the CAN-FD setpoint and telemetry path and implemented portions of the FOC control loop.
@@ -229,17 +236,13 @@ Electronics, signals, and control systems.
 \section{Patents}
 \vspace{1pt}
 \begin{itemize}
-\item{Co-inventor, three University of Michigan provisional patent applications, UM Ref. Nos. 2026-235-01, 2026-234-01, 2026-233-01 (2026).}
-\end{itemize}
-
-% ============================================================
-%     REFERENCES
-% ============================================================
-
-\section{References}
-\vspace{1pt}
+\item{Co-inventor, three University of Michigan provisional patent applications (2026), UM Ref. Nos. 2026-235-01, 2026-234-01, 2026-233-01:
 \begin{itemize}
-\item{Available upon request.}
+    \item \textit{Systems and Methods Implementing Control Logic Software Architecture for Preemptive Control of Active Devices and Systems Within a Vehicle}
+    \item \textit{Systems and Methods for Preemptive Control of Active Notification Devices and Systems Within a Vehicle}
+    \item \textit{Systems and Methods Implementing Perception and Prediction Multithreaded Architecture for Preemptive Control of Active Devices and Systems Within a Vehicle}
+\end{itemize}}
 \end{itemize}
+
 
 \end{document}
