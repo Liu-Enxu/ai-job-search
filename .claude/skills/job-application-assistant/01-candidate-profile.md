@@ -125,11 +125,51 @@ Ann Arbor, MI
 
 - **STM32 Linux-inspired handheld system** (Jan 2026 - present), personal: HAL firmware on STM32F446RE (ARM Cortex-M4) integrating FreeRTOS, LVGL, and FatFS through a single ucHeap; gcc and Keil toolchains; ST-Link and gdb debug. Custom `pvPortRealloc` over the FreeRTOS heap_4 allocator, booting the full stack within 128 KB SRAM / 512 KB flash. Bare-metal BSP and LVGL object-oriented GUI on ILI9486 LCD, ADC+DMA touch sampling, parallel 8080 interface.
 - **Motor embedded motion control** (Jan 2024 - May 2024), coursework: PWM, ADC, and interrupt routines in C on NXP S32K144 for BLDC torque control. PID controller for torque and angle designed and simulated in MATLAB/Simulink with a Stateflow state machine for mode arbitration. Defined CAN-FD message IDs for steering-angle and torque setpoints; HIL-verified real-time control at <10% overshoot.
+- **Mu-Roam: Multi-legged Robots and Animal Motion** (Jan 2024 - Jan 2025), academic (University of Michigan Multidisciplinary Design Program, BIRDSlab; team project - he was a team member, not the lead):
+  - Built ESP32 (ESP-IDF/FreeRTOS) **quadcopter flight-control firmware**: quaternion attitude estimation via a gyro+accel complementary filter, stabilization and acro-mode flight, and ESC motor PWM output.
+  - Developed PID motor controllers for a multi-legged robot's leg joints (PWM, oscilloscope-verified), and a **particle-filter state estimator** fusing IMU and ToF-LiDAR; streamed motor-speed telemetry over UDP.
+  - Designed, simulated and debugged an over/under-voltage protection PCB in KiCAD and LTspice.
+
+<!-- CLAIM BOUNDARY - Mu-Roam (added 2026-07-23): ACADEMIC team project, not industry work.
+     He was a team member, not the project lead - do not write "led" or imply sole ownership.
+     Label it "academic project" or "University of Michigan MDP", never as Motion Sync or
+     professional experience. What it genuinely ADDS to the profile and may be used for:
+     UAV/drone/quadcopter flight-control firmware (a new domain), quaternion attitude estimation
+     and complementary filters, particle-filter state estimation (distinct from his EKF/IAEKF
+     work), ToF-LiDAR sensing, and a second ESP32/ESP-IDF/FreeRTOS data point. Pull it into
+     tailored CVs for drone/robotics/controls/flight-firmware postings; leave it out otherwise. -->
+
 - **Self-driving cars - path planning and motion control** (Sep 2024 - Dec 2024), coursework: Reinforcement-learning motion planning (Markov Decision Process) with MPC motion control, simulated and verified in ROS Rviz.
 - **MIMO feedback controller design** (Jan 2024 - May 2024), coursework: PID controllers via loop shaping for a simulated wafer-etching system in MATLAB/Simulink. MIMO feedback controller integrating LQR with integrators, LQE, and loop transfer recovery (LTR); robustness verified by margin analysis.
 
 <!-- The three coursework projects are labeled as such deliberately. They are legitimate CV
      content but must never be drafted as industry experience. -->
+
+## Research & Academic Backup (added 2026-07-23)
+
+Not on the standard industry firmware CV. Pull these into tailored CVs for **controls,
+robotics, autonomy, ML, estimation, or research/R&D** roles, where they are strong. All are
+academic/coursework/research - label them as such, never as industry or Motion Sync work.
+
+**Controls & optimization**
+- **Self-driving cars - MPC & navigation** (UMich NA 565, Sep-Dec 2024), coursework: designed model predictive controllers (MPC) to track trajectory and to bypass/overtake obstacles and a leading car; navigation combining Markov Decision Process + value iteration + MPC, simulated in ROS.
+- **Inverted-pendulum convex optimization** (UMich ECE 598, Sep-Dec 2024), coursework: convex-optimization control combining H2 and H-infinity norm optimization; simulated in MuJoCo, verified across nonlinearity cases, robustness to balance validated.
+- **Controller design for humanoid balancing** (UMich directed study, Prof. Lisa Li, Sep 2024 - Jan 2025): derived dynamics and linearized state spaces for multi-joint inverted-pendulum models; LQR and PID controllers balancing on inertial wheels in MuJoCo, with stability analysis.
+
+**Robotics / autonomy / ML (publication-backed)**
+- **Navigation & path planning for autonomous robots** (UCL, Prof. Nick Hawes/Oxford, Jul-Oct 2022): MDP reinforcement-learning navigation of a robot through a partially observable discrete 3D environment; state-space design, value and policy iteration, transition-probability scanning to avoid hidden obstacles; interactive Python GUI. **First-author IEEE publication (IC&C 2023).**
+- **Undergraduate thesis: parkour ML categorization** (UCL, Dr. Thomas Gilbert, Aug 2022 - Apr 2023): SVM classifier distinguishing five similar parkour vaults at >94% accuracy; comparative analysis of PCA, forward-sequential and variance-only feature extraction; Python.
+
+**Research employment (academic arm of PREACT)**
+- **Research Assistant - Motion-Sickness Sensing & Preemptive Seat Control** (UMich Precision Systems Design Lab, Apr 2024 - Jan 2025): supervised-learning classification of real-time IMU data to motion-sickness level. **Co-authored paper in revision for IEEE Transactions on Human-Machine Systems.** This is the university-research side of the same motion-sickness programme as the Motion Sync / PREACT work, run concurrently.
+
+<!-- CLAIM BOUNDARY - research backup (2026-07-23): all academic/coursework/research, not
+     industry. The two publications are REAL and correct the earlier "Publications: None" error -
+     one first-author IEEE conference paper (IC&C 2023), one co-authored IEEE Transactions journal
+     paper in revision. New capabilities these unlock for tailored CVs: MPC, LQR, H2/H-inf convex
+     optimization, MuJoCo simulation, reinforcement learning (MDP/value+policy iteration), SVM and
+     ML feature extraction (PCA). Do not present the directed-study or coursework as Motion Sync
+     work; the PSD Lab RA role was concurrent academic research, distinct from the startup job. -->
 
 ## Technical Skills
 
@@ -149,13 +189,15 @@ Ann Arbor, MI
 - Embedded C/C++ (primary), Python, Qt (C++), bash; Git/GitHub, CMake, scons, GDB, Keil, VS Code; MISRA C, Jira, Scrum, CI/CD
 
 ### Controls & robotics
-- ROS2 (node architecture, topics, custom IPC), ROS Rviz, PID, MPC, LQR/LQE/LTR, Kalman filtering and EKF (including IAE-KF with IGGIII robust weighting), GNSS/INS sensor fusion, BLDC-FOC motor control, MATLAB/Simulink/Stateflow, MuJoCo
+- ROS2 (node architecture, topics, custom IPC), ROS Rviz, PID, MPC, LQR/LQE/LTR, Kalman filtering and EKF (including IAE-KF with IGGIII robust weighting), particle-filter state estimation, GNSS/INS and IMU/ToF-LiDAR sensor fusion, quadcopter flight control (quaternion attitude estimation, complementary filter), BLDC-FOC motor control, MATLAB/Simulink/Stateflow, MuJoCo
 
 ### Hardware & lab
 - PCB design (KiCAD), LTspice simulation, oscilloscope, logic analyzer, multimeter, JTAG/SWD (J-Link, ST-Link), board bring-up and root-cause analysis, DFM/DFA, FCC compliance
 
 ## Publications
-None.
+(Corrected 2026-07-23 - the profile previously and incorrectly said "None".)
+1. **First author**, reinforcement-learning navigation and path planning for autonomous robots in a partially observable 3D environment (MDP, value/policy iteration). Published at the **2023 International Conference on Intelligent Computing and Control (IC&C), IEEE**. Research done at UCL, supervised by Prof. Nick Hawes (Oxford). Jul-Oct 2022.
+2. **Co-author**, supervised-learning paper mapping and classifying real-time IMU data to motion-sickness level. **In revision for IEEE Transactions on Human-Machine Systems.** Research done as a full-time research assistant at the University of Michigan Precision Systems Design Lab, Apr 2024 - Jan 2025 (the academic arm of the PREACT motion-sickness programme; concurrent with the Motion Sync employment).
 
 ## Patents
 - Co-inventor, three University of Michigan provisional patent applications, UM Ref. Nos. 2026-235-01, 2026-234-01, 2026-233-01 (2026). Titles (from the industry portfolio):

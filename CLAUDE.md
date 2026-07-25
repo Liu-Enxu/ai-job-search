@@ -70,7 +70,9 @@ postings; nothing here is legal advice.
 - Co-inventor, three University of Michigan provisional patent applications, UM Ref. Nos. 2026-235-01, 2026-234-01, 2026-233-01 (2026)
 
 ### Publications
-None.
+- **First author**, RL navigation/path planning for autonomous robots, IEEE IC&C 2023 (UCL research, supervised by Prof. Nick Hawes, Oxford)
+- **Co-author**, supervised-learning IMU-to-motion-sickness classification, in revision for IEEE Transactions on Human-Machine Systems (UMich Precision Systems Design Lab)
+- See the Research & Academic Backup section of `01-candidate-profile.md` for the full set of research/controls/ML projects to pull into robotics, controls, autonomy, ML, or R&D applications.
 
 ### Awards
 _None recorded._
